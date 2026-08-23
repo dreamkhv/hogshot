@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-test:
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Select Xcode
+        run: |
+          ls /Applications | grep -i xcode || true
+          if [ -d "/Applications/Xcode-beta.app" ]; then
+            XCODE_PATH="/Applications/Xcode-beta.app"
+          else
+            XCODE_PATH="$(ls -d /Applications/Xcode*.app | sort -V | tail -n1)"
+          fi
+          echo "Using $XCODE_PATH"
+          sudo xcode-select -s "$XCODE_PATH/Contents/Developer"
+          xcodebuild -version
+
+      - name: Build
+        run: xcodebuild -project HogShot.xcodeproj -scheme HogShot -destination 'platform=macOS' build
+
+      - name: Test
+        run: xcodebuild -project HogShot.xcodeproj -scheme HogShot -destination 'platform=macOS' test

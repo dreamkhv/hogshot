@@ -1,5 +1,7 @@
 # HogShot
 
+[![CI](https://github.com/dreamkhv/hogshot/actions/workflows/ci.yml/badge.svg)](https://github.com/dreamkhv/hogshot/actions/workflows/ci.yml)
+
 A macOS menu-bar screenshot & annotation tool. Lives in the menu bar (no Dock icon),
 triggered by a global hotkey.
 
