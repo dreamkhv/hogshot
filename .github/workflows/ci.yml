@@ -21,11 +21,7 @@ jobs:
       - name: Select Xcode
         run: |
           ls /Applications | grep -i xcode || true
-          if [ -d "/Applications/Xcode-beta.app" ]; then
-            XCODE_PATH="/Applications/Xcode-beta.app"
-          else
-            XCODE_PATH="$(ls -d /Applications/Xcode*.app | sort -V | tail -n1)"
-          fi
+          XCODE_PATH="$(ls -d /Applications/Xcode*.app | sort -V | tail -n1)"
           echo "Using $XCODE_PATH"
           sudo xcode-select -s "$XCODE_PATH/Contents/Developer"
           xcodebuild -version
